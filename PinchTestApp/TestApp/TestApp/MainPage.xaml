@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+	x:Class="TestApp.MainPage"
+	xmlns="http://xamarin.com/schemas/2014/forms"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:local="clr-namespace:TestApp"
+	xmlns:localUc="clr-namespace:TestApp.ViewModel"
+	xmlns:localViews="clr-namespace:TestApp.Controls"
+	xmlns:views="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms">
+	<Grid
+		HorizontalOptions="FillAndExpand"
+		RowSpacing="0"
+		VerticalOptions="FillAndExpand">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="40" />
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="00" />
+		</Grid.ColumnDefinitions>
+		<localViews:GridWithGesture
+			x:Name="GridWithGesture"
+			Grid.Row="1"
+			Grid.Column="1"
+			HorizontalOptions="FillAndExpand"
+			VerticalOptions="FillAndExpand">
+			<localViews:GridWithGesture.GestureRecognizers>
+				<PinchGestureRecognizer PinchUpdated="PinchGestureRecognizer_PinchUpdated" />
+			</localViews:GridWithGesture.GestureRecognizers>
+			<views:SKCanvasView x:Name="canvas" PaintSurface="OnPaintSample" />
+			<Grid.Effects>
+				<localUc:TouchEffect Capture="True" TouchAction="OnTouchEffectAction" />
+			</Grid.Effects>
+		</localViews:GridWithGesture>
+	</Grid>
+</ContentPage>
