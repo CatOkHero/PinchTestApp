@@ -1,0 +1,6 @@
+*bin/
+*obj/
+Component/
+packages/
+*.suo
+*/Resources/Resource.designer.cs
