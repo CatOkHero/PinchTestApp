@@ -139,11 +139,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Listeners\FancyGestureListener.cs" />
     <Compile Include="MainActivity.cs" />
-    <Compile Include="Renderers\GridWithGestureRendedrer.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SKCanvasEffect.cs" />
     <Compile Include="TouchEffect.cs" />
   </ItemGroup>
   <ItemGroup>

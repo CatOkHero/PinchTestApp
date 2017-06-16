@@ -3,33 +3,42 @@
 	x:Class="TestApp.MainPage"
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-	xmlns:local="clr-namespace:TestApp"
-	xmlns:localUc="clr-namespace:TestApp.ViewModel"
 	xmlns:localViews="clr-namespace:TestApp.Controls"
 	xmlns:views="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms">
+
+
 	<Grid
+		x:Name="GridWithGesture"
 		HorizontalOptions="FillAndExpand"
-		RowSpacing="0"
+		InputTransparent="True"
 		VerticalOptions="FillAndExpand">
 		<Grid.RowDefinitions>
-			<RowDefinition Height="40" />
+			<RowDefinition Height="*" />
+			<RowDefinition Height="30" />
+			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="00" />
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="30" />
+			<ColumnDefinition Width="*" />
 		</Grid.ColumnDefinitions>
-		<localViews:GridWithGesture
-			x:Name="GridWithGesture"
+		<views:SKCanvasView
+			x:Name="canvas"
+			Grid.Row="0"
+			Grid.RowSpan="3"
+			Grid.Column="0"
+			Grid.ColumnSpan="3"
+			PaintSurface="OnPaintSample">
+			<views:SKCanvasView.GestureRecognizers>
+				<PinchGestureRecognizer PinchUpdated="PinchGestureRecognizer_PinchUpdated" />
+			</views:SKCanvasView.GestureRecognizers>
+		</views:SKCanvasView>
+		<BoxView
 			Grid.Row="1"
 			Grid.Column="1"
-			HorizontalOptions="FillAndExpand"
-			VerticalOptions="FillAndExpand">
-			<localViews:GridWithGesture.GestureRecognizers>
-				<PinchGestureRecognizer PinchUpdated="PinchGestureRecognizer_PinchUpdated" />
-			</localViews:GridWithGesture.GestureRecognizers>
-			<views:SKCanvasView x:Name="canvas" PaintSurface="OnPaintSample" />
-			<Grid.Effects>
-				<localUc:TouchEffect Capture="True" TouchAction="OnTouchEffectAction" />
-			</Grid.Effects>
-		</localViews:GridWithGesture>
+			localViews:Gesture.Tapped="{Binding CanvasTappedCommand}"
+			BackgroundColor="Black"
+			HeightRequest="15"
+			WidthRequest="15" />
 	</Grid>
 </ContentPage>
