@@ -27,12 +27,12 @@
 				<!--<views:SKCanvasView
 					x:Name="Canvas"
 					InputTransparent="True"
-					PaintSurface="OnPaintSample">
+					PaintSurface="OnPaintSample">-->
 
-					<views:SKCanvasView.GestureRecognizers>
-						<PinchGestureRecognizer PinchUpdated="PinchGestureRecognizer_PinchUpdated" />
-					</views:SKCanvasView.GestureRecognizers>
-				</views:SKCanvasView>-->
+				<views:SKCanvasView.GestureRecognizers>
+					<PinchGestureRecognizer PinchUpdated="PinchGestureRecognizer_PinchUpdated" />
+				</views:SKCanvasView.GestureRecognizers>
+				<!--</views:SKCanvasView>-->
 			</views:SKCanvasView>
 		</StackLayout>
 	</localViews:ZoomableScrollView>
