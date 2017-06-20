@@ -4,41 +4,36 @@
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 	xmlns:localViews="clr-namespace:TestApp.Controls"
+	xmlns:mr="clr-namespace:MR.Gestures;assembly=MR.Gestures"
 	xmlns:views="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms">
-
-
-	<Grid
-		x:Name="GridWithGesture"
+	<localViews:ZoomableScrollView
+		x:Name="Scroll"
 		HorizontalOptions="FillAndExpand"
 		InputTransparent="True"
+		MaximumZoomScale="5"
+		MinimumZoomScale="1"
+		Orientation="Both"
 		VerticalOptions="FillAndExpand">
-		<Grid.RowDefinitions>
-			<RowDefinition Height="*" />
-			<RowDefinition Height="30" />
-			<RowDefinition Height="*" />
-		</Grid.RowDefinitions>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="*" />
-			<ColumnDefinition Width="30" />
-			<ColumnDefinition Width="*" />
-		</Grid.ColumnDefinitions>
-		<views:SKCanvasView
-			x:Name="canvas"
-			Grid.Row="0"
-			Grid.RowSpan="3"
-			Grid.Column="0"
-			Grid.ColumnSpan="3"
-			PaintSurface="OnPaintSample">
-			<views:SKCanvasView.GestureRecognizers>
-				<PinchGestureRecognizer PinchUpdated="PinchGestureRecognizer_PinchUpdated" />
-			</views:SKCanvasView.GestureRecognizers>
-		</views:SKCanvasView>
-		<BoxView
-			Grid.Row="1"
-			Grid.Column="1"
-			localViews:Gesture.Tapped="{Binding CanvasTappedCommand}"
-			BackgroundColor="Black"
-			HeightRequest="15"
-			WidthRequest="15" />
-	</Grid>
+		<StackLayout
+			HorizontalOptions="FillAndExpand"
+			InputTransparent="True"
+			Orientation="Horizontal">
+			<views:SKCanvasView
+				x:Name="Canvas"
+				HorizontalOptions="FillAndExpand"
+				IgnorePixelScaling="True"
+				PaintSurface="OnPaintSample"
+				VerticalOptions="FillAndExpand">
+				<!--<views:SKCanvasView
+					x:Name="Canvas"
+					InputTransparent="True"
+					PaintSurface="OnPaintSample">
+
+					<views:SKCanvasView.GestureRecognizers>
+						<PinchGestureRecognizer PinchUpdated="PinchGestureRecognizer_PinchUpdated" />
+					</views:SKCanvasView.GestureRecognizers>
+				</views:SKCanvasView>-->
+			</views:SKCanvasView>
+		</StackLayout>
+	</localViews:ZoomableScrollView>
 </ContentPage>
