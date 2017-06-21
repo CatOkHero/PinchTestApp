@@ -12,7 +12,7 @@
 		InputTransparent="True"
 		MaximumZoomScale="5"
 		MinimumZoomScale="1"
-		Orientation="Both"
+		Orientation="Horizontal"
 		VerticalOptions="FillAndExpand">
 		<StackLayout
 			HorizontalOptions="FillAndExpand"

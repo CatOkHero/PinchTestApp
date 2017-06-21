@@ -2,6 +2,7 @@
 using System.Linq;
 using Android.Util;
 using Android.Views;
+using Android.Views.Animations;
 using SkiaSharp.Views.Forms;
 using TestApp.Controls;
 using TestApp.Droid;
@@ -13,124 +14,119 @@ using Xamarin.Forms.Platform.Android;
 
 namespace TestApp.Droid
 {
-	public class ZoomableScrollViewRenderer : ScrollViewRenderer
+	public class ZoomableScrollViewRenderer : ScrollViewRenderer, ScaleGestureDetector.IOnScaleGestureListener
 	{
-		float originalDistanceX, currentdistanceX, originalDistanceY, currentdistanceY;
+		float originalDistanceX, currentdistanceX, originalDistanceY, currentdistanceY; private bool _isScaleProcess = false;
 		bool IsPinching = false;
 		double currentScale;
 		private SKCanvasView canvas;
 		ScrollView svMain, svSub;
 		private StackLayout absoluteLayout;
 		private DisplayMetrics displayMetrics;
+		private ScaleGestureDetector _scaleDetector;
+		private float mScale;
 
 		protected override void OnElementChanged(VisualElementChangedEventArgs e)
 		{
 			base.OnElementChanged(e);
+			_scaleDetector = new ScaleGestureDetector(Context, this);
 			displayMetrics = Context.Resources.DisplayMetrics;
 			svMain = ((ScrollView)e.NewElement);
 			absoluteLayout = svMain.Content as StackLayout;
 			canvas = absoluteLayout.Children.FirstOrDefault() as SKCanvasView;
-			//svSub = new ScrollView();
-			//svSub.Orientation = ScrollOrientation.Horizontal;
-			//svSub.Content = absoluteLayout;
-			//svMain.Content = svSub;
-		}
-
-		public override bool OnTouchEvent(MotionEvent e)
-		{
-			if (e.PointerCount > 1)
-			{
-				IsPinching = true;
-				currentScale = canvas.Scale;
-				originalDistanceX = Math.Abs(e.GetX(0) - e.GetX(1));
-				originalDistanceY = Math.Abs(e.GetY(0) - e.GetY(1));
-
-			}
-			else
-			{
-				IsPinching = false;
-			}
-			return base.OnTouchEvent(e);
 		}
 
 		public override bool DispatchTouchEvent(Android.Views.MotionEvent e)
 		{
-			switch (e.Action)
+			if (e.PointerCount == 2)
 			{
-				case MotionEventActions.Down:
-					this.Parent.RequestDisallowInterceptTouchEvent(true);
-					break;
-				case MotionEventActions.Move:
-					if (IsPinching && e.PointerCount > 1)
-					{
-						currentdistanceX = Math.Abs(e.GetX(0) - e.GetX(1));
-						currentdistanceY = Math.Abs(e.GetY(0) - e.GetY(1));
-
-
-						if (originalDistanceX < currentdistanceX || originalDistanceY < currentdistanceY)
-						{
-							svMain.Scale += 0.2;
-						}
-						else if ((originalDistanceX > currentdistanceX || originalDistanceY > currentdistanceY) && svMain.Scale > 1)
-						{
-							svMain.Scale -= 0.2;
-						}
-					}
-					break;
-				case MotionEventActions.Up:
-					this.Parent.RequestDisallowInterceptTouchEvent(false);
-					break;
+				return _scaleDetector.OnTouchEvent(e);
 			}
+			else if (_isScaleProcess)
+			{
+				//HACK:
+				//Prevent letting any touch events from moving the scroll view until all fingers are up from zooming...This prevents the jumping and skipping around after user zooms.
+				if (e.Action == MotionEventActions.Up)
+				{
+					_isScaleProcess = false;
+				}
+
+				if (e.Action == MotionEventActions.Down)
+				{
+					_isScaleProcess = false;
+				}
+
+				return false;
+			}
+
 			return base.DispatchTouchEvent(e);
 		}
 
-		private Point PxToDp(Point point)
+		public bool OnScale(ScaleGestureDetector detector)
 		{
-			point.X = point.X / displayMetrics.Density;
-			point.Y = point.Y / displayMetrics.Density;
-			return point;
+			float scale = 1 - detector.ScaleFactor;
+
+			float prevScale = mScale;
+			mScale += scale;
+
+			if (mScale < 0.1f) // Minimum scale condition:
+				mScale = 0.1f;
+
+			if (mScale > 10f) // Maximum scale condition:
+				mScale = 10f;
+
+			var fromX = 1f / prevScale;
+			var toX = 1f / mScale;
+			var fromY = 1f / prevScale;
+			var toY = 1f / mScale;
+			var pivotX = detector.FocusX;
+			var pivotY = detector.FocusY;
+
+			if (toX < 1 || toY < 1)
+			{
+				return true;
+			}
+
+			var scaleAnimation = new ScaleAnimation(fromX, toX, fromY, toY, pivotX, pivotY);
+			scaleAnimation.Duration = 0;
+			scaleAnimation.FillAfter = true;
+			StartAnimation(scaleAnimation);
+
+			return true;
 		}
 
+		public bool OnScaleBegin(ScaleGestureDetector detector)
+		{
+			return true;
+		}
+
+		public void OnScaleEnd(ScaleGestureDetector detector)
+		{
+		}
 
 	}
 
 
 
-	//public class ZoomableScrollViewRenderer : ScrollViewRenderer
+	//public class ZoomableScrollViewRenderer : ScrollViewRenderer, ScaleGestureDetector.IOnScaleGestureListener
 	//{
 	//	private ScaleGestureDetector _scaleDetector;
 	//	private bool _isScaleProcess = false;
 	//	private float _prevScale = 1f;
+	//	private float mScale = 1f;
+	//	private SKCanvasView canvas;
+	//	ScrollView svMain, svSub;
+	//	private StackLayout absoluteLayout;
+	//	private DisplayMetrics displayMetrics;
 
 	//	protected override void OnElementChanged(VisualElementChangedEventArgs e)
 	//	{
 	//		base.OnElementChanged(e);
-	//		if (e.NewElement != null)
-	//		{
-	//			_scaleDetector = new ScaleGestureDetector(Context, new ClearScaleListener(
-	//				scale =>
-	//				{
-	//					var scrollView = Element as ZoomableScrollView;
 
-	//					var xRatio = scale.FocusX / Width;
-	//					var yRatio = scale.FocusY / Height;
+	//		_scaleDetector = new ScaleGestureDetector(Context, this);
+	//		svMain = ((ScrollView) e.NewElement);
+	//		canvas = svMain.Content as SKCanvasView;
 
-	//					scrollView.AnchorX = xRatio;
-	//					scrollView.AnchorY = yRatio;
-	//				},
-	//				scale =>
-	//				{
-	//					_isScaleProcess = true;
-	//					var scrollView = Element as ZoomableScrollView;
-	//					var horScrollView = GetChildAt(0) as global::Android.Widget.HorizontalScrollView;
-	//					var content = horScrollView.GetChildAt(0);
-	//					_prevScale = Math.Max((float)scrollView.MinimumZoomScale, Math.Min(_prevScale * scale.ScaleFactor, (float)scrollView.MaximumZoomScale));
-
-	//					content.ScaleX = content.ScaleY = _prevScale;
-	//					System.Diagnostics.Debug.WriteLine($"Delta: {scale}  Final: {content.ScaleX}");
-	//					System.Diagnostics.Debug.WriteLine($"AnchorX: {scrollView.AnchorX}  AnchorY: {scrollView.AnchorY}");
-	//				}));
-	//		}
 	//	}
 
 	//	public override bool DispatchTouchEvent(MotionEvent e)
@@ -150,14 +146,42 @@ namespace TestApp.Droid
 	//		else
 	//			return base.OnTouchEvent(e);
 	//	}
-	//}
+
+	//	public bool OnScale(ScaleGestureDetector detector)
+	//	{
+	//		float scale = 1 - detector.ScaleFactor;
+
+	//		float prevScale = mScale;
+	//		mScale += scale;
+
+	//		if (mScale < 0.1f) // Minimum scale condition:
+	//			mScale = 0.1f;
+
+	//		if (mScale > 10f) // Maximum scale condition:
+	//			mScale = 10f;
+
+	//		ScaleAnimation scaleAnimation = new ScaleAnimation(1f / prevScale, 1f / mScale, 1f / prevScale, 1f / mScale, detector.FocusX, detector.FocusY);
+	//		scaleAnimation.Duration = 0;
+	//		scaleAnimation.FillAfter = true;
+	//		StartAnimation(scaleAnimation);
+
+	//		return true;
+	//	}
+
+	//	public bool OnScaleBegin(ScaleGestureDetector detector)
+	//	{
+	//		return true;
+	//	}
+
+	//	public void OnScaleEnd(ScaleGestureDetector detector)
+	//	{
+	//	}
 
 	//public class ClearScaleListener : ScaleGestureDetector.SimpleOnScaleGestureListener
 	//{
 	//	private Action<ScaleGestureDetector> _onScale;
 	//	private Action<ScaleGestureDetector> _onScaleBegin;
 	//	private bool _skip = false;
-
 	//	public ClearScaleListener(Action<ScaleGestureDetector> onScaleBegin, Action<ScaleGestureDetector> onScale)
 	//	{
 	//		_onScale = onScale;
@@ -166,11 +190,22 @@ namespace TestApp.Droid
 
 	//	public override bool OnScale(ScaleGestureDetector detector)
 	//	{
-	//		if (_skip)
-	//		{
-	//			_skip = false;
-	//			return true;
-	//		}
+	//		float scale = 1 - detector.getScaleFactor();
+
+	//		float prevScale = mScale;
+	//		mScale += scale;
+
+	//		if (mScale < 0.1f) // Minimum scale condition:
+	//			mScale = 0.1f;
+
+	//		if (mScale > 10f) // Maximum scale condition:
+	//			mScale = 10f;
+
+	//		ScaleAnimation scaleAnimation = new ScaleAnimation(1f / prevScale, 1f / mScale, 1f / prevScale, 1f / mScale, detector.getFocusX(), detector.getFocusY());
+	//		scaleAnimation.setDuration(0);
+	//		scaleAnimation.setFillAfter(true);
+	//		myContainer.startAnimation(scaleAnimation);
+
 	//		_onScale?.Invoke(detector);
 	//		return true;
 	//	}

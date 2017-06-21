@@ -53,9 +53,9 @@ namespace TestApp
 									canvas.DrawBitmap(bitmap, SKRect.Create(width, height), paint);
 									Canvas.HeightRequest = height;
 									Canvas.WidthRequest = width;
-									//Canvas.InvalidateSurface();
-									//Scroll.HeightRequest = height;
-									//Scroll.WidthRequest = width;
+									Canvas.InvalidateSurface();
+									Scroll.HeightRequest = height;
+									Scroll.WidthRequest = width;
 									//GridWithGesture.HeightRequest = width;
 								}
 							}
@@ -120,7 +120,7 @@ namespace TestApp
 				currentScale += (e.Scale - 1) * startScale;
 				currentScale = Math.Max(1, currentScale);
 
-				if (currentScale > 5)
+				if (currentScale > 5 || currentScale < 1)
 				{
 					return;
 				}
