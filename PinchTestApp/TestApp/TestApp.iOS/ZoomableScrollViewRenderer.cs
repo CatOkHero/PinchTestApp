@@ -20,10 +20,10 @@ namespace TestApp.iOS
 
 			if (e.OldElement == null)
 			{
-				ZoomableScrollView zsv = Element as ZoomableScrollView;
-				this.MinimumZoomScale = zsv.MinimumZoomScale;
-				this.MaximumZoomScale = zsv.MaximumZoomScale;
-				this.ViewForZoomingInScrollView += (UIScrollView sv) => { return this.Subviews[0]; };
+				//ZoomableScrollView zsv = Element as ZoomableScrollView;
+				//this.MinimumZoomScale = zsv.MinimumZoomScale;
+				//this.MaximumZoomScale = zsv.MaximumZoomScale;
+				//this.ViewForZoomingInScrollView += (UIScrollView sv) => { return this.Subviews[0]; };
 			}
 		}
 	}

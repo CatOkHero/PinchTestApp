@@ -5,35 +5,63 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 	xmlns:localViews="clr-namespace:TestApp.Controls"
 	xmlns:mr="clr-namespace:MR.Gestures;assembly=MR.Gestures"
+	xmlns:viewModel="clr-namespace:TestApp.ViewModel;assembly=TestApp"
 	xmlns:views="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms">
-	<localViews:ZoomableScrollView
-		x:Name="Scroll"
-		HorizontalOptions="FillAndExpand"
-		InputTransparent="True"
-		MaximumZoomScale="5"
-		MinimumZoomScale="1"
-		Orientation="Horizontal"
-		VerticalOptions="FillAndExpand">
-		<StackLayout
-			HorizontalOptions="FillAndExpand"
-			InputTransparent="True"
-			Orientation="Horizontal">
-			<views:SKCanvasView
-				x:Name="Canvas"
+	<OnPlatform x:TypeArguments="View">
+		<On Platform="iOS">
+			<ScrollView
+				x:Name="Scroll"
 				HorizontalOptions="FillAndExpand"
-				IgnorePixelScaling="True"
-				PaintSurface="OnPaintSample"
+				Orientation="Horizontal"
 				VerticalOptions="FillAndExpand">
-				<!--<views:SKCanvasView
-					x:Name="Canvas"
+				<StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal">
+					<views:SKCanvasView
+						x:Name="Canvas"
+						HeightRequest="1800"
+						HorizontalOptions="FillAndExpand"
+						IgnorePixelScaling="True"
+						PaintSurface="OnPaintSample"
+						VerticalOptions="FillAndExpand"
+						WidthRequest="2800">
+						<views:SKCanvasView.GestureRecognizers>
+							<PinchGestureRecognizer PinchUpdated="PinchGestureRecognizer_PinchUpdated" />
+						</views:SKCanvasView.GestureRecognizers>
+					</views:SKCanvasView>
+					<StackLayout.Effects>
+						<viewModel:TouchEffect Capture="True" TouchAction="OnTouchEffectAction" />
+					</StackLayout.Effects>
+				</StackLayout>
+			</ScrollView>
+		</On>
+		<On Platform="Android">
+			<localViews:ZoomableScrollView
+				HorizontalOptions="FillAndExpand"
+				InputTransparent="True"
+				MaximumZoomScale="5"
+				MinimumZoomScale="1"
+				Orientation="Horizontal"
+				VerticalOptions="FillAndExpand">
+				<StackLayout
+					HorizontalOptions="FillAndExpand"
 					InputTransparent="True"
-					PaintSurface="OnPaintSample">-->
-
-				<views:SKCanvasView.GestureRecognizers>
-					<PinchGestureRecognizer PinchUpdated="PinchGestureRecognizer_PinchUpdated" />
-				</views:SKCanvasView.GestureRecognizers>
-				<!--</views:SKCanvasView>-->
-			</views:SKCanvasView>
-		</StackLayout>
-	</localViews:ZoomableScrollView>
+					Orientation="Horizontal">
+					<views:SKCanvasView
+						localViews:Gesture.Tapped="{Binding CanvasTappedCommand}"
+						HeightRequest="1800"
+						HorizontalOptions="FillAndExpand"
+						IgnorePixelScaling="True"
+						PaintSurface="OnPaintSample"
+						VerticalOptions="FillAndExpand"
+						WidthRequest="2800">
+						<views:SKCanvasView.GestureRecognizers>
+							<PinchGestureRecognizer PinchUpdated="PinchGestureRecognizer_PinchUpdated" />
+						</views:SKCanvasView.GestureRecognizers>
+						<views:SKCanvasView.Effects>
+							<viewModel:TouchEffect Capture="True" TouchAction="OnTouchEffectAction" />
+						</views:SKCanvasView.Effects>
+					</views:SKCanvasView>
+				</StackLayout>
+			</localViews:ZoomableScrollView>
+		</On>
+	</OnPlatform>
 </ContentPage>

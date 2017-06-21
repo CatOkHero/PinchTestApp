@@ -40,7 +40,7 @@ namespace TestApp
 							if (!string.IsNullOrEmpty(strimg64))
 							{
 								byte[] imageBytes = Convert.FromBase64String(strimg64);
-								Stream fileStream = new MemoryStream(imageBytes);  
+								Stream fileStream = new MemoryStream(imageBytes);
 
 								// clear the canvas / fill with white
 								canvas.DrawColor(SKColors.White);
@@ -51,11 +51,11 @@ namespace TestApp
 								using (var paint = new SKPaint())
 								{
 									canvas.DrawBitmap(bitmap, SKRect.Create(width, height), paint);
-									Canvas.HeightRequest = height;
-									Canvas.WidthRequest = width;
-									Canvas.InvalidateSurface();
-									Scroll.HeightRequest = height;
-									Scroll.WidthRequest = width;
+									//Canvas.HeightRequest = height;
+									//Canvas.WidthRequest = width;
+									//Canvas.InvalidateSurface();
+									Content.HeightRequest = height;
+									Content.WidthRequest = width;
 									//GridWithGesture.HeightRequest = width;
 								}
 							}
@@ -91,6 +91,11 @@ namespace TestApp
 								using (var paint = new SKPaint())
 								{
 									canvas.DrawBitmap(bitmap, SKRect.Create(width, height), paint);
+									//Canvas.HeightRequest = height;
+									//Canvas.WidthRequest = width;
+									//Canvas.InvalidateSurface();
+									Content.HeightRequest = height;
+									Content.WidthRequest = width;
 								}
 							}
 						}
@@ -103,6 +108,12 @@ namespace TestApp
 			}
 		}
 
+		public void OnTapp(object sender, EventArgs e)
+		{
+			
+		}
+
+
 		private void PinchGestureRecognizer_PinchUpdated(object sender, PinchGestureUpdatedEventArgs e)
 		{
 
@@ -110,9 +121,9 @@ namespace TestApp
 			{
 				// Store the current scale factor applied to the wrapped user interface element,
 				// and zero the components for the center point of the translate transform.
-				startScale = Scroll.Scale;
-				Scroll.AnchorX = 0;
-				Scroll.AnchorY = 0;
+				startScale = Content.Scale;
+				Content.AnchorX = 0;
+				Content.AnchorY = 0;
 			}
 			if (e.Status == GestureStatus.Running)
 			{
@@ -127,28 +138,28 @@ namespace TestApp
 
 				// The ScaleOrigin is in relative coordinates to the wrapped user interface element,
 				//// so get the X pixel coordinate.
-				double renderedX = Scroll.X + xOffset;
+				double renderedX = Content.X + xOffset;
 				double deltaX = renderedX / Width;
-				double deltaWidth = Width / (Scroll.Width * startScale);
+				double deltaWidth = Width / (Content.Width * startScale);
 				double originX = (e.ScaleOrigin.X - deltaX) * deltaWidth;
 
 				// The ScaleOrigin is in relative coordinates to the wrapped user interface element,
 				// so get the Y pixel coordinate.
-				double renderedY = Scroll.Y + yOffset;
+				double renderedY = Content.Y + yOffset;
 				double deltaY = renderedY / Height;
-				double deltaHeight = Height / (Scroll.Height * startScale);
+				double deltaHeight = Height / (Content.Height * startScale);
 				double originY = (e.ScaleOrigin.Y - deltaY) * deltaHeight;
 
 				// Calculate the transformed element pixel coordinates.
-				double targetX = xOffset - (originX * Scroll.Width) * (currentScale - startScale);
-				double targetY = yOffset - (originY * Scroll.Height) * (currentScale - startScale);
+				double targetX = xOffset - (originX * Content.Width) * (currentScale - startScale);
+				double targetY = yOffset - (originY * Content.Height) * (currentScale - startScale);
 
 				// Apply translation based on the change in origin.
-				Scroll.TranslationX = targetX.Clamp(-Scroll.Width * (currentScale - 1), 0);
-				Scroll.TranslationY = targetY.Clamp(-Scroll.Height * (currentScale - 1), 0);
+				Content.TranslationX = targetX.Clamp(-Content.Width * (currentScale - 1), 0);
+				Content.TranslationY = targetY.Clamp(-Content.Height * (currentScale - 1), 0);
 
 				// Apply scale factor.
-				Scroll.Scale = currentScale;
+				Content.Scale = currentScale;
 
 				//var childrens = GridWithGesture.Children.Where(item => item.GetType() == typeof(BoxView));
 				//foreach (var children in childrens)
@@ -164,23 +175,23 @@ namespace TestApp
 			}
 		}
 
-		//private void OnTouchEffectAction(object sender, TouchActionEventArgs args)
-		//{
-		//	// Convert Xamarin.Forms point to pixels
-		//	//TouchManipulationBitmap bitmap;
-		//	List<long> touchIds = new List<long>();
-		//	Point pt = args.Location;
-		//	SKPoint point =
-		//		new SKPoint((float)(pt.X),
-		//					(float)(pt.Y));
+		private void OnTouchEffectAction(object sender, TouchActionEventArgs args)
+		{
+			// Convert Xamarin.Forms point to pixels
+			//TouchManipulationBitmap bitmap;
+			List<long> touchIds = new List<long>();
+			Point pt = args.Location;
+			SKPoint point =
+				new SKPoint((float)(pt.X),
+							(float)(pt.Y));
 
-		//	switch (args.Type)
-		//	{
-		//		case TouchActionType.Pressed:
-		//			DiamondClick(point);
-		//			break;
-		//	}
-		//}
+			switch (args.Type)
+			{
+				case TouchActionType.Pressed:
+					DiamondClick(point);
+					break;
+			}
+		}
 
 		//SKPoint ConvertToPixel(Point pt)
 		//{
@@ -188,16 +199,16 @@ namespace TestApp
 		//					   (float)(Canvas.CanvasSize.Height * pt.Y / Canvas.Height));
 		//}
 
-		//public void DiamondClick(SKPoint point)
-		//{
-		//	try
-		//	{
-		//	}
-		//	catch (Exception ex)
-		//	{
-		//		throw ex;
-		//	}
-		//}
+		public void DiamondClick(SKPoint point)
+		{
+			try
+			{
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
 		//private void Button_OnClicked(object sender, EventArgs e)
 		//{
 

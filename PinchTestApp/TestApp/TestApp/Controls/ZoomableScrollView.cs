@@ -18,5 +18,18 @@ namespace TestApp.Controls
 			get { return (float)GetValue(MaximumZoomScaleProperty); }
 			set { SetValue(MaximumZoomScaleProperty, value); }
 		}
+
+		public static readonly BindableProperty TappedProperty = BindableProperty.CreateAttached("Tapped",
+			typeof(Command<Point>), typeof(Gesture), null);
+
+		public static Command<Point> GetCommand(BindableObject view)
+		{
+			return (Command<Point>)view.GetValue(TappedProperty);
+		}
+
+		public static void SetTapped(BindableObject view, Command<Point> value)
+		{
+			view.SetValue(TappedProperty, value);
+		}
 	}
 }
