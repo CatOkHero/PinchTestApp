@@ -9,11 +9,11 @@ using Xamarin.Forms.Platform.Android;
 using View = Android.Views.View;
 
 [assembly: ResolutionGroupName("AvalonSoftware")]
-[assembly: ExportEffect(typeof(SKCanvasEffect), nameof(SKCanvasEffect))]
+[assembly: ExportEffect(typeof(TapGestureWithPointEffect), nameof(TapGestureWithPointEffect))]
 
 namespace TestApp.Droid
 {
-	public class SKCanvasEffect : PlatformEffect
+	public class TapGestureWithPointEffect : PlatformEffect
 	{
 		private ScaleGestureDetector scaleGestureDetector;
 		private GestureDetectorCompat gestureRecognizer;
@@ -21,7 +21,7 @@ namespace TestApp.Droid
 		private Command<Point> tapWithPositionCommand;
 		private DisplayMetrics displayMetrics;
 
-		public SKCanvasEffect()
+		public TapGestureWithPointEffect()
 		{
 			tapDetector = new InternalGestureDetector
 			{
@@ -80,14 +80,6 @@ namespace TestApp.Droid
 		{
 			var control = Control ?? Container;
 			control.Touch -= ControlOnTouch;
-		}
-
-
-		public class ScaleGestureModel
-		{
-			public float X { get; set; }
-			public float Y { get; set; }
-			public float Scale { get; set; }
 		}
 
 		sealed class InternalGestureDetector : GestureDetector.SimpleOnGestureListener

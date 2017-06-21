@@ -4,34 +4,26 @@
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 	xmlns:localViews="clr-namespace:TestApp.Controls"
-	xmlns:mr="clr-namespace:MR.Gestures;assembly=MR.Gestures"
-	xmlns:viewModel="clr-namespace:TestApp.ViewModel;assembly=TestApp"
 	xmlns:views="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms">
 	<OnPlatform x:TypeArguments="View">
 		<On Platform="iOS">
-			<ScrollView
-				x:Name="Scroll"
+			<localViews:ZoomableScrollView
+				localViews:Gesture.Tapped="{Binding CanvasTappedCommand}"
 				HorizontalOptions="FillAndExpand"
+				MaximumZoomScale="5"
+				MinimumZoomScale="1"
 				Orientation="Horizontal"
 				VerticalOptions="FillAndExpand">
 				<StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal">
 					<views:SKCanvasView
-						x:Name="Canvas"
 						HeightRequest="1800"
 						HorizontalOptions="FillAndExpand"
 						IgnorePixelScaling="True"
 						PaintSurface="OnPaintSample"
 						VerticalOptions="FillAndExpand"
-						WidthRequest="2800">
-						<views:SKCanvasView.GestureRecognizers>
-							<PinchGestureRecognizer PinchUpdated="PinchGestureRecognizer_PinchUpdated" />
-						</views:SKCanvasView.GestureRecognizers>
-					</views:SKCanvasView>
-					<StackLayout.Effects>
-						<viewModel:TouchEffect Capture="True" TouchAction="OnTouchEffectAction" />
-					</StackLayout.Effects>
+						WidthRequest="2800" />
 				</StackLayout>
-			</ScrollView>
+			</localViews:ZoomableScrollView>
 		</On>
 		<On Platform="Android">
 			<localViews:ZoomableScrollView
@@ -56,9 +48,6 @@
 						<views:SKCanvasView.GestureRecognizers>
 							<PinchGestureRecognizer PinchUpdated="PinchGestureRecognizer_PinchUpdated" />
 						</views:SKCanvasView.GestureRecognizers>
-						<views:SKCanvasView.Effects>
-							<viewModel:TouchEffect Capture="True" TouchAction="OnTouchEffectAction" />
-						</views:SKCanvasView.Effects>
 					</views:SKCanvasView>
 				</StackLayout>
 			</localViews:ZoomableScrollView>

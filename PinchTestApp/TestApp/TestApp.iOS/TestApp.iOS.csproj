@@ -88,12 +88,10 @@
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="GestureEffect.cs" />
+    <Compile Include="Effects\TapGestureWithPointEffect.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
-    <Compile Include="TouchEffect.cs" />
-    <Compile Include="TouchRecognizer.cs" />
-    <Compile Include="ZoomableScrollViewRenderer.cs" />
+    <Compile Include="Renderers\ZoomableScrollViewRenderer.cs" />
     <None Include="Entitlements.plist" />
     <None Include="Info.plist" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -120,12 +118,6 @@
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="MR.Gestures, Version=1.4.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MR.Gestures.1.4.2\lib\Xamarin.iOS10\MR.Gestures.dll</HintPath>
-    </Reference>
-    <Reference Include="MR.Gestures.iOS, Version=1.4.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MR.Gestures.1.4.2\lib\Xamarin.iOS10\MR.Gestures.iOS.dll</HintPath>
-    </Reference>
     <Reference Include="SkiaSharp, Version=1.58.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
       <HintPath>..\..\packages\SkiaSharp.1.58.0\lib\XamariniOS\SkiaSharp.dll</HintPath>
     </Reference>

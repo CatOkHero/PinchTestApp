@@ -55,7 +55,7 @@ namespace TestApp.Controls
 
 	public class GestureEffect : RoutingEffect
 	{
-		public GestureEffect() : base("AvalonSoftware.SKCanvasEffect")
+		public GestureEffect() : base("AvalonSoftware.TapGestureWithPointEffect")
 		{
 		}
 	}

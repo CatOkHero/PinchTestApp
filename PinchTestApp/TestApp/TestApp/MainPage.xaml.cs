@@ -1,13 +1,11 @@
 ﻿using SkiaSharp;
 using SkiaSharp.Views.Forms;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using MR.Gestures;
 using TestApp.ViewModel;
 using Xamarin.Forms;
 using ContentPage = Xamarin.Forms.ContentPage;
+using TestApp.Extentions;
 
 namespace TestApp
 {
@@ -108,12 +106,6 @@ namespace TestApp
 			}
 		}
 
-		public void OnTapp(object sender, EventArgs e)
-		{
-			
-		}
-
-
 		private void PinchGestureRecognizer_PinchUpdated(object sender, PinchGestureUpdatedEventArgs e)
 		{
 
@@ -170,34 +162,10 @@ namespace TestApp
 			if (e.Status == GestureStatus.Completed)
 			{
 				// Store the translation delta's of the wrapped user interface element.
-				xOffset = Scroll.TranslationX;
-				yOffset = Scroll.TranslationY;
+				xOffset = Content.TranslationX;
+				yOffset = Content.TranslationY;
 			}
 		}
-
-		private void OnTouchEffectAction(object sender, TouchActionEventArgs args)
-		{
-			// Convert Xamarin.Forms point to pixels
-			//TouchManipulationBitmap bitmap;
-			List<long> touchIds = new List<long>();
-			Point pt = args.Location;
-			SKPoint point =
-				new SKPoint((float)(pt.X),
-							(float)(pt.Y));
-
-			switch (args.Type)
-			{
-				case TouchActionType.Pressed:
-					DiamondClick(point);
-					break;
-			}
-		}
-
-		//SKPoint ConvertToPixel(Point pt)
-		//{
-		//	return new SKPoint((float)(Canvas.CanvasSize.Width * pt.X / Canvas.Width),
-		//					   (float)(Canvas.CanvasSize.Height * pt.Y / Canvas.Height));
-		//}
 
 		public void DiamondClick(SKPoint point)
 		{
@@ -209,60 +177,5 @@ namespace TestApp
 				throw ex;
 			}
 		}
-		//private void Button_OnClicked(object sender, EventArgs e)
-		//{
-
-		//	Scroll.Scale -= 0.7;
-		//}
-
-		//private void addScale(object sender, EventArgs e)
-		//{
-		//	Scroll.Scale += 0.7;
-		//}
-
-		//private void ScrollView_OnPinched(object sender, PinchEventArgs e)
-		//{
-		//	Canvas.Scale = e.TotalScale;
-		//	//// Calculate the scale factor to be applied.
-		//	//currentScale += (e.TotalScale - 1) * startScale;
-		//	//currentScale = Math.Max(1, currentScale);
-
-		//	//if (currentScale > 6)
-		//	//{
-		//	//	return;
-		//	//}
-
-		//	//// The ScaleOrigin is in relative coordinates to the wrapped user interface element,
-		//	////// so get the X pixel coordinate.
-		//	//double renderedX = Scroll.X + xOffset;
-		//	//double deltaX = renderedX / Width;
-		//	//double deltaWidth = Width / (Scroll.Width * startScale);
-		//	//double originX = (e..X - deltaX) * deltaWidth;
-
-		//	//// The ScaleOrigin is in relative coordinates to the wrapped user interface element,
-		//	//// so get the Y pixel coordinate.
-		//	//double renderedY = Scroll.Y + yOffset;
-		//	//double deltaY = renderedY / Height;
-		//	//double deltaHeight = Height / (Scroll.Height * startScale);
-		//	//double originY = (e.ScaleOrigin.Y - deltaY) * deltaHeight;
-
-		//	//// Calculate the transformed element pixel coordinates.
-		//	//double targetX = xOffset - (originX * Scroll.Width) * (currentScale - startScale);
-		//	//double targetY = yOffset - (originY * Scroll.Height) * (currentScale - startScale);
-
-		//	//// Apply translation based on the change in origin.
-		//	//Scroll.TranslationX = targetX.Clamp(-Scroll.Width * (currentScale - 1), 0);
-		//	//Scroll.TranslationY = targetY.Clamp(-Scroll.Height * (currentScale - 1), 0);
-
-		//	//// Apply scale factor.
-		//	//Scroll.Scale = currentScale;
-
-		//	//var childrens = GridWithGesture.Children.Where(item => item.GetType() == typeof(BoxView));
-		//	//foreach (var children in childrens)
-		//	//{
-		//	//	children.Scale = 1 / GridWithGesture.Scale;
-		//	//}
-
-		//}
 	}
 }

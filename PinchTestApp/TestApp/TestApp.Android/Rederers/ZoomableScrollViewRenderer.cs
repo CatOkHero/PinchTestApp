@@ -12,7 +12,7 @@ using Xamarin.Forms.Platform.Android;
 
 namespace TestApp.Droid
 {
-	public class ZoomableScrollViewRenderer : ScrollViewRenderer, ScaleGestureDetector.IOnScaleGestureListener//, GestureDetector.IOnGestureListener
+	public class ZoomableScrollViewRenderer : ScrollViewRenderer, ScaleGestureDetector.IOnScaleGestureListener
 	{
 		float originalDistanceX, currentdistanceX, originalDistanceY, currentdistanceY; private bool _isScaleProcess = false;
 		bool IsPinching = false;
@@ -22,7 +22,6 @@ namespace TestApp.Droid
 		private StackLayout absoluteLayout;
 		private DisplayMetrics displayMetrics;
 		private ScaleGestureDetector _scaleDetector;
-		private GestureDetector gestureDetector;
 		private float mScale;
 		private Command<Point> tapWithPositionCommand;
 
@@ -30,7 +29,6 @@ namespace TestApp.Droid
 		{
 			base.OnElementChanged(e);
 			_scaleDetector = new ScaleGestureDetector(Context, this);
-			//gestureDetector = new GestureDetector(Context, this);
 			displayMetrics = Context.Resources.DisplayMetrics;
 			svMain = ((ScrollView)e.NewElement);
 			absoluteLayout = svMain.Content as StackLayout;
@@ -59,10 +57,6 @@ namespace TestApp.Droid
 
 				return false;
 			}
-			//else
-			//{
-			//	return gestureDetector.OnTouchEvent(e);
-			//}
 
 			return base.DispatchTouchEvent(e);
 		}
