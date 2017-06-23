@@ -13,10 +13,23 @@ namespace TestApp
 	{
 		double currentScale = 1, startScale = 1, xOffset = 0, yOffset = 0;
 		public  SKCanvas canvas;
+		private MainViewModel mainViewModel;
+
 		public MainPage()
 		{
 			InitializeComponent();
-			BindingContext = new MainViewModel();
+			mainViewModel = new MainViewModel();
+			mainViewModel.GetThePointAction += GetPointOnTapGesture;
+			BindingContext = mainViewModel;
+			CanvasViewAndroid.WidthRequest = 2800;
+			CanvasViewAndroid.HeightRequest = 1800;
+			CanvasViewiOS.WidthRequest = 2800;
+			CanvasViewiOS.HeightRequest = 1800;
+		}
+
+		private void GetPointOnTapGesture(Point point)
+		{
+			
 		}
 
 		private void OnPaintSample(object sender, SKPaintSurfaceEventArgs e)

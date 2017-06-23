@@ -7,6 +7,7 @@ namespace TestApp.ViewModel
 	public class MainViewModel : INotifyPropertyChanged
 	{
 		DateTime dateTime;
+		public Action<Point> GetThePointAction { get; set; }
 
 		public Command<Point> CanvasTappedCommand
 		{
@@ -18,7 +19,7 @@ namespace TestApp.ViewModel
 
 		public void OnCanvasTapped(Point p)
 		{
-			// your event handling logic
+			GetThePointAction(p);
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;

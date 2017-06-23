@@ -16,12 +16,11 @@
 				VerticalOptions="FillAndExpand">
 				<StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal">
 					<views:SKCanvasView
-						HeightRequest="1800"
+						x:Name="CanvasViewiOS"
 						HorizontalOptions="FillAndExpand"
 						IgnorePixelScaling="True"
 						PaintSurface="OnPaintSample"
-						VerticalOptions="FillAndExpand"
-						WidthRequest="2800" />
+						VerticalOptions="FillAndExpand" />
 				</StackLayout>
 			</localViews:ZoomableScrollView>
 		</On>
@@ -38,13 +37,12 @@
 					InputTransparent="True"
 					Orientation="Horizontal">
 					<views:SKCanvasView
+						x:Name="CanvasViewAndroid"
 						localViews:Gesture.Tapped="{Binding CanvasTappedCommand}"
-						HeightRequest="1800"
 						HorizontalOptions="FillAndExpand"
 						IgnorePixelScaling="True"
 						PaintSurface="OnPaintSample"
-						VerticalOptions="FillAndExpand"
-						WidthRequest="2800">
+						VerticalOptions="FillAndExpand">
 						<views:SKCanvasView.GestureRecognizers>
 							<PinchGestureRecognizer PinchUpdated="PinchGestureRecognizer_PinchUpdated" />
 						</views:SKCanvasView.GestureRecognizers>
